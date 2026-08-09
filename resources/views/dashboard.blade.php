@@ -82,7 +82,7 @@
 </div>
 @endif
 
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+<div class="grid-2-col">
     {{-- Recent Records --}}
     <div class="card">
         <div class="card-head">
@@ -94,18 +94,20 @@
         @if($recentRecords->isEmpty())
             <div class="empty"><i class="fas fa-inbox"></i><p>Belum ada data</p></div>
         @else
-        <table class="tbl">
-            <thead><tr><th>Pasien</th><th>Tanggal</th><th>Keluhan</th></tr></thead>
-            <tbody>
-                @foreach($recentRecords as $rec)
-                <tr>
-                    <td style="font-weight:500;">{{ $rec->patient->name }}</td>
-                    <td>{{ $rec->visit_date->format('d/m/Y') }}</td>
-                    <td>{{ Str::limit($rec->complaint, 40) }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="tbl">
+                <thead><tr><th>Pasien</th><th>Tanggal</th><th>Keluhan</th></tr></thead>
+                <tbody>
+                    @foreach($recentRecords as $rec)
+                    <tr>
+                        <td style="font-weight:500;">{{ $rec->patient->name }}</td>
+                        <td>{{ $rec->visit_date->format('d/m/Y') }}</td>
+                        <td>{{ Str::limit($rec->complaint, 40) }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
         @endif
     </div>
 
@@ -120,23 +122,25 @@
         @if($recentReferrals->isEmpty())
             <div class="empty"><i class="fas fa-inbox"></i><p>Belum ada rujukan</p></div>
         @else
-        <table class="tbl">
-            <thead><tr><th>Dari</th><th>Ke</th><th>Status</th></tr></thead>
-            <tbody>
-                @foreach($recentReferrals as $ref)
-                <tr>
-                    <td>{{ $ref->fromDoctor->user->name ?? '-' }}</td>
-                    <td>{{ $ref->toDoctor->user->name ?? '-' }}</td>
-                    <td>
-                        @if($ref->status === 'pending')<span class="badge badge-yellow">Pending</span>
-                        @elseif($ref->status === 'accepted')<span class="badge badge-blue">Diterima</span>
-                        @elseif($ref->status === 'completed')<span class="badge badge-green">Selesai</span>
-                        @else<span class="badge badge-red">Ditolak</span>@endif
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="tbl">
+                <thead><tr><th>Dari</th><th>Ke</th><th>Status</th></tr></thead>
+                <tbody>
+                    @foreach($recentReferrals as $ref)
+                    <tr>
+                        <td>{{ $ref->fromDoctor->user->name ?? '-' }}</td>
+                        <td>{{ $ref->toDoctor->user->name ?? '-' }}</td>
+                        <td>
+                            @if($ref->status === 'pending')<span class="badge badge-yellow">Pending</span>
+                            @elseif($ref->status === 'accepted')<span class="badge badge-blue">Diterima</span>
+                            @elseif($ref->status === 'completed')<span class="badge badge-green">Selesai</span>
+                            @else<span class="badge badge-red">Ditolak</span>@endif
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
         @endif
     </div>
 </div>

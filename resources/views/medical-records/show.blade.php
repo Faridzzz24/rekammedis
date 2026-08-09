@@ -12,10 +12,14 @@
         <h2>Pasien: {{ $medicalRecord->patient->name }}</h2>
         <div class="actions">
             @if(in_array(auth()->user()->role, ['admin','doctor']))
-            <a href="{{ route('medical-records.edit', $medicalRecord) }}" class="btn btn-secondary btn-sm">Edit</a>
+            <a href="{{ route('medical-records.edit', $medicalRecord) }}" class="btn btn-secondary btn-sm"><i class="fas fa-edit"></i> Edit</a>
             @if(!$medicalRecord->referral)
             <a href="{{ route('referrals.create', ['medical_record_id' => $medicalRecord->id]) }}" class="btn btn-primary btn-sm"><i class="fas fa-share"></i> Buat Rujukan</a>
             @endif
+            <form method="POST" action="{{ route('medical-records.destroy', $medicalRecord) }}" onsubmit="return confirm('Apakah Anda yakin ingin menghapus rekam medis ini?')" style="display:inline;">
+                @csrf @method('DELETE')
+                <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Hapus</button>
+            </form>
             @endif
         </div>
     </div>

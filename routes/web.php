@@ -52,7 +52,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Referrals
     Route::middleware('role:admin,doctor')->group(function () {
-        Route::resource('referrals', ReferralController::class)->except(['edit', 'update', 'destroy']);
+        Route::resource('referrals', ReferralController::class)->except(['edit', 'update']);
         Route::post('/referrals/{referral}/accept', [ReferralController::class, 'accept'])->name('referrals.accept');
         Route::post('/referrals/{referral}/complete', [ReferralController::class, 'complete'])->name('referrals.complete');
         Route::post('/referrals/{referral}/reject', [ReferralController::class, 'reject'])->name('referrals.reject');

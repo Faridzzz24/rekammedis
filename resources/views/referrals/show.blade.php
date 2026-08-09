@@ -2,8 +2,14 @@
 @section('page-title', 'Detail Rujukan')
 
 @section('content')
-<div style="margin-bottom: 16px;">
+<div style="margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
     <a href="{{ route('referrals.index') }}" class="btn btn-secondary btn-sm"><i class="fas fa-arrow-left"></i> Kembali</a>
+    @if(in_array(auth()->user()->role, ['admin','doctor']))
+    <form method="POST" action="{{ route('referrals.destroy', $referral) }}" onsubmit="return confirm('Apakah Anda yakin ingin menghapus rujukan ini?')" style="display:inline;">
+        @csrf @method('DELETE')
+        <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Hapus Rujukan</button>
+    </form>
+    @endif
 </div>
 
 {{-- Transfer Flow --}}

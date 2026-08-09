@@ -29,8 +29,17 @@
                 <td>{{ $r->hospital->name }}</td>
                 <td>{{ Str::limit($r->complaint, 30) }}</td>
                 <td>{{ Str::limit($r->diagnosis ?? '-', 30) }}</td>
-                <td>
-                    <a href="{{ route('medical-records.show', $r) }}" class="btn btn-secondary btn-xs">Detail</a>
+                <td style="white-space:nowrap;">
+                    <div class="actions">
+                        <a href="{{ route('medical-records.show', $r) }}" class="btn btn-secondary btn-xs">Detail</a>
+                        @if(in_array(auth()->user()->role, ['admin','doctor']))
+                        <a href="{{ route('medical-records.edit', $r) }}" class="btn btn-secondary btn-xs">Edit</a>
+                        <form method="POST" action="{{ route('medical-records.destroy', $r) }}" onsubmit="return confirm('Apakah Anda yakin ingin menghapus rekam medis ini?')" style="display:inline;">
+                            @csrf @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-xs">Hapus</button>
+                        </form>
+                        @endif
+                    </div>
                 </td>
             </tr>
             @endforeach

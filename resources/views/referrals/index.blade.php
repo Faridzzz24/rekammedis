@@ -49,8 +49,16 @@
                     @else<span class="badge badge-red">Ditolak</span>@endif
                 </td>
                 <td>{{ $ref->created_at->format('d/m/Y') }}</td>
-                <td>
-                    <a href="{{ route('referrals.show', $ref) }}" class="btn btn-secondary btn-xs">Detail</a>
+                <td style="white-space:nowrap;">
+                    <div class="actions">
+                        <a href="{{ route('referrals.show', $ref) }}" class="btn btn-secondary btn-xs">Detail</a>
+                        @if(in_array(auth()->user()->role, ['admin','doctor']))
+                        <form method="POST" action="{{ route('referrals.destroy', $ref) }}" onsubmit="return confirm('Apakah Anda yakin ingin menghapus rujukan ini?')" style="display:inline;">
+                            @csrf @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-xs">Hapus</button>
+                        </form>
+                        @endif
+                    </div>
                 </td>
             </tr>
             @endforeach

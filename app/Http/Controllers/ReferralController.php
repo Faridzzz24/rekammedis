@@ -50,7 +50,13 @@ class ReferralController extends Controller
             $medicalRecord = MedicalRecord::with(['patient', 'doctor.user', 'hospital'])->find($request->medical_record_id);
         }
 
-        $doctors = Doctor::with(['user', 'hospital'])->get();
+        // Tampilkan semua dokter KECUALI diri sendiri (jika yang login adalah dokter)
+        $doctorsQuery = Doctor::with(['user', 'hospital']);
+        if (auth()->user()->role === 'doctor' && auth()->user()->doctor) {
+            $doctorsQuery->where('id', '!=', auth()->user()->doctor->id);
+        }
+        $doctors = $doctorsQuery->get();
+
         $hospitals = Hospital::all();
         $medicalRecords = MedicalRecord::with('patient')
             ->whereDoesntHave('referral')
@@ -70,6 +76,13 @@ class ReferralController extends Controller
             'notes' => 'nullable|string',
             'priority' => 'required|in:normal,urgent,emergency',
         ]);
+
+        // Cek agar dokter tidak merujuk ke diri sendiri
+        if (auth()->user()->role === 'doctor' && auth()->user()->doctor) {
+            if ($validated['to_doctor_id'] == auth()->user()->doctor->id) {
+                return back()->withInput()->with('error', 'Anda tidak dapat membuat rujukan ke diri sendiri.');
+            }
+        }
 
         $medicalRecord = MedicalRecord::findOrFail($validated['medical_record_id']);
 
@@ -143,5 +156,13 @@ class ReferralController extends Controller
 
         return redirect()->route('referrals.show', $referral)
             ->with('success', 'Rujukan telah ditolak.');
+    }
+
+    public function destroy(Referral $referral)
+    {
+        $referral->delete();
+
+        return redirect()->route('referrals.index')
+            ->with('success', 'Rujukan berhasil dihapus.');
     }
 }

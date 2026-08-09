@@ -23,7 +23,6 @@ if (file_exists($dbSrc) && !file_exists('/tmp/database.sqlite')) {
 }
 
 // 3. Set environment variables BEFORE Laravel boots.
-//    putenv + $_ENV + $_SERVER ensures all config helpers pick them up.
 $vars = [
     'APP_STORAGE_PATH'   => '/tmp/storage',
     'APP_SERVICES_CACHE' => '/tmp/bootstrap/cache/services.php',
@@ -39,6 +38,8 @@ $vars = [
     'CACHE_DRIVER'       => 'array',
     'DB_CONNECTION'      => 'sqlite',
     'DB_DATABASE'        => '/tmp/database.sqlite',
+    'HTTPS'              => 'on',
+    'SERVER_PORT'        => '443',
 ];
 
 foreach ($vars as $key => $val) {

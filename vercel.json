@@ -10,15 +10,15 @@
   "routes": [
     {
       "src": "/build/(.*)",
-      "dest": "/public/build/$1"
+      "dest": "/build/$1"
     },
     {
       "src": "/favicon.ico",
-      "dest": "/public/favicon.ico"
+      "dest": "/favicon.ico"
     },
     {
       "src": "/robots.txt",
-      "dest": "/public/robots.txt"
+      "dest": "/robots.txt"
     },
     {
       "src": "/(.*)",
@@ -31,6 +31,7 @@
     "APP_KEY": "base64:nVmeJwwr+1hDMlDmDxr0khAGgfHO7UqB5mhKSElhNaM=",
     "APP_DEBUG": "true",
     "APP_URL": "https://rekammedis-sigma.vercel.app",
+    "ASSET_URL": "https://rekammedis-sigma.vercel.app",
     "LOG_CHANNEL": "stderr",
     "LOG_STACK": "stderr",
     "DB_CONNECTION": "sqlite",

@@ -16,13 +16,19 @@ foreach ([
     }
 }
 
-// 2. Copy SQLite database to /tmp (writable)
+// 2. Prepare SQLite database in /tmp
+$tmpDbPath = '/tmp/database.sqlite';
 $dbSrc = __DIR__ . '/../database/database.sqlite';
-if (file_exists($dbSrc) && !file_exists('/tmp/database.sqlite')) {
-    copy($dbSrc, '/tmp/database.sqlite');
+
+if (!file_exists($tmpDbPath)) {
+    if (file_exists($dbSrc)) {
+        copy($dbSrc, $tmpDbPath);
+    } else {
+        touch($tmpDbPath);
+    }
 }
 
-// 3. Set environment variables BEFORE Laravel boots.
+// 3. Set environment variables BEFORE Laravel boots
 $vars = [
     'APP_STORAGE_PATH'   => '/tmp/storage',
     'APP_SERVICES_CACHE' => '/tmp/bootstrap/cache/services.php',

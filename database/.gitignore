@@ -1,1 +1,3 @@
+# Ignore sqlite files except seeded database.sqlite
 *.sqlite*
+!database.sqlite
